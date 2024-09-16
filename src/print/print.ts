@@ -3,6 +3,7 @@ import fs from "fs";
 import execAsync from "../utils/exec-file-async";
 import fixPathForAsarUnpack from "../utils/electron-util";
 import throwIfUnsupportedOperatingSystem from "../utils/throw-if-unsupported-os";
+import { exec } from "child_process"
 
 export interface PrintOptions {
   printer?: string;
@@ -64,7 +65,19 @@ export default async function print(
   args.push(pdf);
 
   try {
-    await execAsync(sumatraPdf, args);
+    //await execAsync(sumatraPdf, args);
+    await new Promise((resolve, reject)=>{
+      let proc = exec(`${sumatraPdf} ${args.join(" ")}`, {windowsHide:true}, function(err, stdout, stderr){
+        if (err != null) {
+          reject(err)
+        }
+      });
+      proc.on("close", resolve);
+      proc.on("error", reject);
+      proc.on("disconnect", resolve);
+      proc.on("exit", resolve);
+      proc.disconnect();
+    })
   } catch (error) {
     throw error;
   }
