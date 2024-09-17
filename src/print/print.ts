@@ -47,7 +47,7 @@ export default async function print(
     args.push("-exit-when-done");
   } else {
     if (printer) {
-      args.push("-print-to", printer);
+      args.push("-print-to", `"${printer}"`);
     } else {
       args.push("-print-to-default");
     }
