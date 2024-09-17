@@ -64,10 +64,11 @@ export default async function print(
 
   args.push(pdf);
 
+  let proc;
   try {
     //await execAsync(sumatraPdf, args);
     await new Promise((resolve, reject)=>{
-      let proc = spawn(sumatraPdf, args, {windowsHide:true, stdio:"ignore"});
+      proc = spawn(sumatraPdf, args, {windowsHide:true, stdio:"ignore"});
       proc.on("close", resolve);
       proc.on("error", reject);
       proc.on("disconnect", resolve);
@@ -75,6 +76,10 @@ export default async function print(
     })
   } catch (error) {
     throw error;
+  } finally{
+    if (proc){
+      proc.kill();
+    }
   }
 }
 
