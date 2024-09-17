@@ -73,6 +73,7 @@ export default async function print(
       proc.on("error", reject);
       proc.on("disconnect", resolve);
       proc.on("exit", resolve);
+      proc.disconnect();
     })
   } catch (error) {
     throw error;
