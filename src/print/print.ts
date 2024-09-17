@@ -71,6 +71,8 @@ export default async function print(
         if (err != null) {
           reject(err)
         }
+        console.log(stdout);
+        console.log(stderr)
       });
       proc.on("close", resolve);
       proc.on("error", reject);
