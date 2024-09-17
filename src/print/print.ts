@@ -3,7 +3,7 @@ import fs from "fs";
 import execAsync from "../utils/exec-file-async";
 import fixPathForAsarUnpack from "../utils/electron-util";
 import throwIfUnsupportedOperatingSystem from "../utils/throw-if-unsupported-os";
-import { spawn } from "child_process"
+import { ChildProcess, spawn } from "child_process"
 
 export interface PrintOptions {
   printer?: string;
@@ -64,7 +64,7 @@ export default async function print(
 
   args.push(pdf);
 
-  let proc;
+  let proc:ChildProcess | null = null;
   try {
     //await execAsync(sumatraPdf, args);
     await new Promise((resolve, reject)=>{
@@ -78,7 +78,7 @@ export default async function print(
     throw error;
   } finally{
     if (proc){
-      proc.kill();
+      (proc as ChildProcess).kill();
     }
   }
 }
