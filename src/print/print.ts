@@ -64,23 +64,23 @@ export default async function print(
 
   args.push(pdf);
 
-  //let proc:ChildProcess | null = null;
- // try {
-    await execAsync(sumatraPdf, args);
-  //  await new Promise((resolve, reject)=>{
-  //    proc = spawn(sumatraPdf, args, {windowsHide:true, stdio:"pipe"});
-  //    proc.on("close", resolve);
-  //    proc.on("error", reject);
-  //    proc.on("disconnect", resolve);
-  //    proc.on("exit", resolve);
-  //  })
-  //} catch (error) {
-  //  throw error;
-  //} finally{
-  //  if (proc){
-  //    (proc as ChildProcess).kill();
-  //  }
-  //}
+  let proc:ChildProcess | null = null;
+  try {
+    //await execAsync(sumatraPdf, args);
+    await new Promise((resolve, reject)=>{
+      proc = spawn(sumatraPdf, args, {windowsHide:true, stdio:"ignore", detached:true});
+      proc.on("close", resolve);
+      proc.on("error", reject);
+      proc.on("disconnect", resolve);
+      proc.on("exit", resolve);
+    })
+  } catch (error) {
+    throw error;
+  } finally{
+    if (proc){
+      (proc as ChildProcess).kill();
+    }
+  }
 }
 
 function getPrintSettings(options: PrintOptions): string[] {
