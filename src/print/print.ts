@@ -68,7 +68,7 @@ export default async function print(
   try {
     //await execAsync(sumatraPdf, args);
     await new Promise((resolve, reject)=>{
-      proc = spawn(sumatraPdf, args, {windowsHide:true, stdio:"ignore"});
+      proc = spawn(sumatraPdf, args, {windowsHide:false, stdio:"pipe"});
       proc.on("close", resolve);
       proc.on("error", reject);
       proc.on("disconnect", resolve);
