@@ -19,6 +19,9 @@ export default function isValidPrinter(printer: string): {
 
   printer.split(/\r?\n/).forEach((line) => {
     let [label, value] = line.split(":").map((el) => el.trim());
+    if (!value) {
+      value = "";
+    }
 
     // handle array dots
     if (value.match(/^{(.*)(\.{3})}$/)) {
